@@ -23,6 +23,6 @@ metadata:
   name: drift-worker
   namespace: errors
 spec:
-  minAvailable: 2
+  minAvailable: 4
   selector:
     matchLabels: {app: drift-worker}
