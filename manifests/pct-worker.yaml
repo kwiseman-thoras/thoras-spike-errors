@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pct-worker
+  namespace: errors
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: pct-worker}
+  template:
+    metadata:
+      labels: {app: pct-worker}
+    spec:
+      containers:
+      - name: worker
+        image: registry.k8s.io/pause:3.10
+        resources:
+          requests: {cpu: 10m, memory: 16Mi}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: pct-worker
+  namespace: errors
+spec:
+  minAvailable: "100%"
+  selector:
+    matchLabels: {app: pct-worker}

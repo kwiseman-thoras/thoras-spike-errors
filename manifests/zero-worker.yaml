@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zero-worker
+  namespace: errors
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: zero-worker}
+  template:
+    metadata:
+      labels: {app: zero-worker}
+    spec:
+      containers:
+      - name: worker
+        image: registry.k8s.io/pause:3.10
+        resources:
+          requests: {cpu: 10m, memory: 16Mi}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: zero-worker
+  namespace: errors
+spec:
+  maxUnavailable: 0
+  selector:
+    matchLabels: {app: zero-worker}

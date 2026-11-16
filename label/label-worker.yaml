@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: label-worker
+  namespace: label-test
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: label-worker}
+  template:
+    metadata:
+      labels: {app: label-worker}
+    spec:
+      containers:
+      - name: worker
+        image: registry.k8s.io/pause:3.10
+        resources:
+          requests: {cpu: 10m, memory: 16Mi}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: label-worker
+  namespace: label-test
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels: {app: label-worker}

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: single-worker
+  namespace: errors
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: single-worker}
+  template:
+    metadata:
+      labels: {app: single-worker}
+    spec:
+      containers:
+      - name: worker
+        image: registry.k8s.io/pause:3.10
+        resources:
+          requests: {cpu: 10m, memory: 16Mi}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: single-worker
+  namespace: errors
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels: {app: single-worker}
