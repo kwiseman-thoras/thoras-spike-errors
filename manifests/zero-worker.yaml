@@ -23,6 +23,6 @@ metadata:
   name: zero-worker
   namespace: errors
 spec:
-  maxUnavailable: 0
+  maxUnavailable: 1
   selector:
     matchLabels: {app: zero-worker}
